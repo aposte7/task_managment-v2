@@ -1,5 +1,11 @@
+import TaskLayout from "./ui/TaskLayout";
+
 function App() {
-  return <div className="">Hello world</div>;
+  return (
+    <div className="">
+      <TaskLayout />
+    </div>
+  );
 }
 
 export default App;
