@@ -2,7 +2,7 @@ import { CircleUser } from "lucide-react";
 
 function NavBar() {
   return (
-    <div className="sticky top-0 left-0 flex w-full items-center justify-between bg-blue-500 px-8 py-2">
+    <div className="sticky top-0 left-0 z-50 flex w-full items-center justify-between bg-blue-500 px-8 py-2">
       <input
         type="search"
         id="search"
