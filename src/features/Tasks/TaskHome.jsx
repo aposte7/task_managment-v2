@@ -1,6 +1,6 @@
 function TaskHome() {
   return (
-    <main className="col-start-2 w-full bg-blue-50 px-4">
+    <main className="relative col-start-2 w-full bg-blue-50 px-4">
       <div className="px-5 py-4">
         <h1 className="text-3xl font-medium">Tasks</h1>
       </div>

@@ -4,6 +4,27 @@
   --color-secondary-1: rgb(142, 143, 149);
   --color-secondary-2: rgb(107, 108, 114);
   --color-primary: rgb(41, 48, 54);
-  --color-tahiti: #3ab7bf;
-  --color-bermuda: #78dcca;
+}
+
+@layer utilities {
+  .scrollbar-custom::-webkit-scrollbar {
+    width: 0px;
+    height: 3px;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 2px;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 2px;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  /* Custom scrollbar for Firefox */
 }
