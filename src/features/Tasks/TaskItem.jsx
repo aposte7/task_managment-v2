@@ -1,4 +1,6 @@
 import { Plus, SquarePen } from "lucide-react";
+import SubTaskList from "../SubTask/SubTaskList";
+import Tag from "../../components/Tag";
 
 function TaskItem() {
   return (
@@ -36,64 +38,14 @@ function TaskItem() {
             {/* <span>Sub task</span>  */}
             <Plus size={25} />
           </p>
-          <div className="h-6 w-20 rounded-sm bg-amber-400 text-center">
-            School
-          </div>
+          <Tag title="High" />
         </div>
         <div className="col-span-full col-start-1 row-start-5 row-end-6 max-h-30 overflow-hidden py-1">
-          <div className="m-auto w-[98%] space-y-1 border-x border-blue-200 pt-1">
-            <div className="relative mx-auto flex h-8 w-[97%] items-center justify-between rounded-sm bg-blue-100 px-2 py-1">
-              <p className="group inline-block w-[16.5rem] truncate">
-                <span className="inline-block w-full truncate">
-                  Complete the Responsive of the mmmmmmmmmm nb hftdgfg jgg
-                </span>
-
-                {/* Tooltip */}
-                <span className="absolute -bottom-[0rem] left-0 z-50 hidden max-w-[100%] rounded-md bg-gray-800 px-3 py-1.5 text-sm break-words whitespace-normal text-white opacity-0 shadow-lg transition-all duration-300 group-hover:-bottom-[3.3rem] group-hover:block group-hover:opacity-100">
-                  Complete the Responsive of the mmmmmmmmmm nb hftdgfg jgg
-                </span>
-              </p>
-              <input type="checkbox" className="h-4.5 w-4.5" />
-            </div>
-
-            <div className="relative mx-auto flex h-8 w-[97%] items-center justify-between rounded-sm bg-blue-100 px-2 py-1">
-              <p className="group inline-block w-[16.5rem] truncate">
-                <span className="inline-block w-full truncate">
-                  Complete the Responsive of the mmmmmmmmmm nb hftdgfg jgg
-                </span>
-
-                {/* Tooltip */}
-                <span className="absolute -bottom-[0rem] left-0 z-50 hidden max-w-[100%] rounded-md bg-gray-800 px-3 py-1.5 text-sm break-words whitespace-normal text-white opacity-0 shadow-lg transition-all duration-300 group-hover:-bottom-[3.3rem] group-hover:block group-hover:opacity-100">
-                  Complete the Responsive of the mmmmmmmmmm nb hftdgfg jgg
-                </span>
-              </p>
-              <input type="checkbox" className="h-4.5 w-4.5" />
-            </div>
-
-            <div className="relative mx-auto flex h-8 w-[97%] items-center justify-between rounded-sm bg-blue-100 px-2 py-1">
-              <p className="group inline-block w-[16.5rem] truncate">
-                {/* Visible (truncated) text */}
-                <span className="inline-block w-full truncate">
-                  Complete the Responsive of the mmmmmmmmmm nb hftdgfg jgg
-                </span>
-
-                {/* Tooltip */}
-                <span className="absolute top-[2rem] left-0 z-50 hidden max-w-[100%] rounded-md bg-gray-800 px-3 py-1.5 text-sm break-words whitespace-normal text-white opacity-0 shadow-lg transition-all duration-300 group-hover:block group-hover:opacity-100">
-                  hftdgfg jgg Complete the Responsijggve of the nb hftdgfg jgg
-                  Complete the Responsive of the nb hftdgfg{" "}
-                </span>
-              </p>
-              <input type="checkbox" className="h-4.5 w-4.5" />
-            </div>
-          </div>
+          <SubTaskList />
         </div>
         <div className="col-span-2 col-start-1 row-start-6 row-end-7 flex gap-1">
-          <div className="h-6 max-w-20 rounded-sm bg-blue-400 px-3 text-center">
-            School
-          </div>
-          <div className="h-6 rounded-sm bg-blue-400 px-3 text-center font-medium">
-            Fellow
-          </div>
+          <Tag title="School" />
+          <Tag title="Fellow" />
         </div>
         <div className="col-span-full col-start-1 row-start-7 row-end-8 flex justify-between">
           <div className="flex gap-1.5 rounded-sm bg-blue-600 px-3 py-1 text-white">
@@ -115,12 +67,8 @@ function TaskItem() {
           Lorem ipsum dolor sit amet consectetur adipisicing elit.
         </p>
         <div className="col-span-2 col-start-1 row-start-3 flex gap-1">
-          <div className="text-md rounded-full bg-blue-600 px-3 py-0 text-center">
-            School
-          </div>
-          <div className="h-6px-3 rounded-sm bg-blue-400 text-center font-medium">
-            Fellow
-          </div>
+          <Tag title="School" />
+          <Tag title="Fellow" />
         </div>
         <div className="col-start-3 row-start-3 justify-self-end">
           <div className="h-6 w-20 rounded-full bg-black"></div>
