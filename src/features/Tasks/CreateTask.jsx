@@ -33,7 +33,7 @@ function CreateTask() {
           </div>
         </div>
 
-        <div className="w-full space-y-2 pt-2 pb-5">
+        <div className="w-full space-y-2 pt-2 pb-2">
           <label className="block text-sm font-semibold text-gray-700">
             Sub-Task
           </label>
@@ -43,7 +43,7 @@ function CreateTask() {
             className="mb-0 block w-full appearance-none rounded-sm border border-gray-300 bg-transparent px-2 py-1.5 text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none"
           />
 
-          <div className="m-auto h-14 w-[98%] space-y-1 border-x border-blue-200 pt-1">
+          <div className="m-auto h-18 w-[98%] space-y-1 overflow-y-clip border-x border-blue-200 pt-1">
             <div className="relative mx-auto flex h-8 w-[97%] items-center justify-between rounded-sm bg-blue-100 px-2 py-1">
               <p className="group inline-block w-[16.5rem] truncate">
                 <span className="inline-block w-full truncate">
