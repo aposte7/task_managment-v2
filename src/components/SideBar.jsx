@@ -1,8 +1,9 @@
 import { LayoutDashboard, ListTodo } from "lucide-react";
+import NavLink from "./NavLink";
 
 function SideBar() {
   return (
-    <aside className="sticky top-0 left-0 col-span-1 row-span-2 min-h-dvh divide-y-1 divide-solid divide-gray-200 self-start bg-white px-4 py-3">
+    <aside className="sticky top-0 left-0 col-span-1 row-span-2 h-dvh divide-y-1 divide-solid divide-gray-200 self-start overflow-y-scroll bg-white px-8 py-3">
       <a href="#" className="block py-2 text-3xl font-semibold">
         <span className="bg-gradient-to-r from-cyan-500 to-purple-600 bg-clip-text text-3xl font-medium text-transparent">
           Dalagaa
@@ -10,10 +11,8 @@ function SideBar() {
       </a>
 
       <div className="relative space-y-8 pt-14">
-        <span className="absolute top-4 -left-0 text-sm font-medium">
-          main-menu
-        </span>
-        <div className="task translate-x-2">
+        <span className="f absolute top-4 -left-0 text-base">main-menu</span>
+        <div className="task">
           <div className="flex items-center gap-2 rounded-sm bg-blue-100 px-2 py-1">
             <ListTodo size={20} color="#4B5563" />
             <div className="text-lg font-medium text-gray-700">Task</div>
@@ -24,9 +23,9 @@ function SideBar() {
               All
             </div>
             <div className="relative -left-4 text-xs">filter by</div>
-            <div>Date</div>
-            <div>Status</div>
-            <div>Priority</div>
+            <NavLink>Date</NavLink>
+            <NavLink>Status</NavLink>
+            <NavLink>Priority</NavLink>
           </div>
         </div>
         <div className="task translate-x-2">
@@ -36,8 +35,8 @@ function SideBar() {
           </div>
 
           <div className="mx-auto w-30 space-y-2 px-2 pt-3">
-            <div>Report</div>
-            <div>Tools</div>
+            <NavLink>Report</NavLink>
+            <NavLink>Tools</NavLink>
           </div>
         </div>
       </div>

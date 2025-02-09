@@ -4,7 +4,7 @@ import TaskHome from "../features/Tasks/TaskHome";
 
 function TaskLayout() {
   return (
-    <div className="grid grid-cols-[13rem_minmax(0,_1fr)] grid-rows-[auto_1fr]">
+    <div className="grid h-dvh grid-cols-[16rem_minmax(0,_1fr)] grid-rows-[auto_1fr]">
       <SideBar />
 
       <NavBar />
