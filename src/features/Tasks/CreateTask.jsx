@@ -1,124 +1,250 @@
+import { X } from "lucide-react";
+import Tag from "../../components/Tag";
 import DateInput from "./components/DateInput";
+import InputContainer from "./components/InputContainer";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
 
-function CreateTask() {
+const tempTags = [
+  "School",
+  "fellow",
+  "Project",
+  "workout",
+  "life",
+  "Friends",
+  "Work",
+];
+function CreateTask({ handleOpen }) {
+  const [task, setTask] = useState("");
+  const [tag, setTag] = useState("");
+  const [filteredTags, setFilteredTags] = useState(tempTags);
+
+  const { register, handleSubmit, watch, control, setValue } = useForm({
+    defaultValues: {
+      duedate: new Date("2025-04-13"),
+      subtasks: [],
+      tags: [],
+    },
+  });
+
+  const subTasks = watch("subtasks");
+  const tags = watch("tags");
+
+  const addSubTasks = () => {
+    if (task.trim()) {
+      setValue("subtasks", [task, ...subTasks], { shouldValidate: true });
+      setTask("");
+      console.log("Subtasks:", subTasks);
+    }
+  };
+
+  const deleteTask = (indexToRemove) => {
+    setValue(
+      "subtasks",
+      subTasks.filter((item, index) => index !== indexToRemove),
+    );
+  };
+  const addTags = (tagValue = "") => {
+    if (tag.trim() && !tagValue.length > 0) {
+      setValue("tags", [tag, ...tags], { shouldValidate: true });
+      setTag("");
+    } else if (tagValue.length > 0) {
+      setValue("tags", [tagValue, ...tags], { shouldValidate: true });
+      setTag("");
+    }
+  };
+  const deleteTag = (indexToRemove) => {
+    setValue(
+      "tags",
+      tags.filter((item, index) => index !== indexToRemove),
+    );
+  };
+
+  const filterTags = (e) => {
+    const value = e.target.value.trim();
+    const filteredArray = tempTags.filter((item, index) => {
+      const found = item.toLowerCase().indexOf(value.toLowerCase(), 0);
+      if (found != -1) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    console.log(filteredArray);
+    setFilteredTags(filteredArray);
+    setTag(value);
+  };
+
+  const onSubmit = (data) => {
+    console.log("Form data:", data);
+  };
   return (
     <div className="div">
       <div className="absolute top-0 left-0 z-50 h-screen w-full bg-blue-950/35 blur-xs"></div>
 
       <div className="fixed top-1/2 left-1/2 z-[100] h-fit w-[28rem] -translate-1/2 rounded-2xl bg-white px-10 py-6">
-        <form className="w-full">
-          <legend className="pb-2 text-xl font-medium">New Task</legend>
-          <div className="w-full space-y-1 py-2">
-            <label className="block text-sm font-semibold text-gray-700">
-              Title
-            </label>
+        <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+          <div className="flex items-center justify-between">
+            <legend className="pb-2 text-xl font-medium">New Task</legend>
+
+            <button
+              type="button"
+              onClick={() => {
+                handleOpen();
+              }}
+              className="cursor-pointer"
+            >
+              <X size={28} color="#3784bf" />
+            </button>
+          </div>
+
+          <InputContainer label="Title" full={true}>
             <input
+              {...register("title")}
+              id="title"
+              name="title"
               type="text"
               placeholder="New Task here ..."
               className="block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2 py-1.5 text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none"
             />
-          </div>
+          </InputContainer>
 
           <div className="flex w-full items-center justify-between">
-            <div className="w-[45%] space-y-1 py-2">
-              <label className="block text-sm font-semibold text-gray-700">
-                Due Date
-              </label>
-              {/* <button className="block w-full appearance-none rounded-lg border border-gray-800 bg-transparent px-3 py-1.5 text-start text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none">
-                13/04/025
-              </button> */}
-              <DateInput />
-            </div>
-            <div className="w-[45%] space-y-1 py-2">
-              <label className="block text-sm font-semibold text-gray-700">
-                Priority
-              </label>
-              <button className="block w-full appearance-none rounded-lg border border-gray-800 bg-transparent px-3 py-1.5 text-start text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none">
-                Normal
-              </button>
-            </div>
+            <InputContainer label="Due Date">
+              <DateInput name="duedate" control={control} />
+            </InputContainer>
+
+            <InputContainer label="Priority">
+              <input
+                {...register("priority")}
+                name="priority"
+                id="priority"
+                placeholder="high"
+                className="block w-full appearance-none rounded-lg border border-gray-800 bg-transparent px-3 py-1.5 text-start text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none"
+              />
+            </InputContainer>
           </div>
 
-          <div className="w-full space-y-1 pt-2 pb-2">
-            <label className="block text-sm font-semibold text-gray-700">
-              Sub-Task
-            </label>
-            <input
-              type="text"
-              placeholder="New Task here ..."
-              className="mb-0 block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2 py-1.5 text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none"
-            />
-
-            <div className="m-auto h-18 w-[98%] space-y-1 overflow-y-clip border-x border-blue-200 pt-1">
-              <div className="relative mx-auto flex h-8 w-[97%] items-center justify-between rounded-lg bg-blue-100 px-2 py-1">
-                <p className="group inline-block w-[16.5rem] truncate">
-                  <span className="inline-block w-full truncate">
-                    Complete the Responsive of the mmmmmmmmmm nb hftdgfg jgg
-                  </span>
-
-                  {/* Tooltip */}
-                  <span className="absolute -bottom-[0rem] left-0 z-50 hidden max-w-[100%] rounded-md bg-gray-800 px-3 py-1.5 text-sm break-words whitespace-normal text-white opacity-0 shadow-lg transition-all duration-300 group-hover:-bottom-[3.3rem] group-hover:block group-hover:opacity-100">
-                    Complete the Responsive of the mmmmmmmmmm nb hftdgfg jgg
-                  </span>
-                </p>
-                <input type="checkbox" className="h-4.5 w-4.5" />
-              </div>
-              <div className="relative mx-auto flex h-8 w-[97%] items-center justify-between rounded-lg bg-blue-100 px-2 py-1">
-                <p className="group inline-block w-[16.5rem] truncate">
-                  {/* Visible (truncated) text */}
-                  <span className="inline-block w-full truncate">
-                    Complete the Responsive of the mmmmmmmmmm nb hftdgfg jgg
-                  </span>
-
-                  {/* Tooltip */}
-                  <span className="absolute top-[2rem] left-0 z-50 hidden max-w-[100%] rounded-md bg-gray-800 px-3 py-1.5 text-sm break-words whitespace-normal text-white opacity-0 shadow-lg transition-all duration-300 group-hover:block group-hover:opacity-100">
-                    hftdgfg jgg Complete the Responsijggve of the nb hftdgfg jgg
-                    Complete the Responsive of the nb hftdgfg{" "}
-                  </span>
-                </p>
-                <input type="checkbox" className="h-4.5 w-4.5" />
-              </div>
-            </div>
-          </div>
-
-          <div className="w-full space-y-1 py-2">
-            <label className="block text-sm font-semibold text-gray-700">
-              Tag
-            </label>
-            <div className="z-50 flex w-full items-center gap-1">
+          <InputContainer label="Sub-task" full={true} className="relative">
+            <>
               <input
                 type="text"
+                id="subtasks"
+                value={task}
+                onChange={(e) => setTask(e.target.value)}
+                autoComplete="off"
                 placeholder="New Task here ..."
-                className="block w-33 appearance-none rounded-lg border border-gray-300 bg-transparent px-2 py-1.5 text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none"
+                className="mb-0 block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2 py-1.5 pr-[4.2rem] text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none"
               />
-              <div className="scrollbar-custom flex gap-1 overflow-scroll py-1.5">
-                <div className="h-6 w-20 shrink-0 rounded-full bg-black"></div>
-                <div className="h-6 w-20 shrink-0 rounded-full bg-black"></div>
-                <div className="h-6 w-20 shrink-0 rounded-full bg-black"></div>
-                <div className="h-6 w-20 shrink-0 rounded-full bg-black"></div>
-                <div className="h-6 w-20 shrink-0 rounded-full bg-black"></div>
-                <div className="h-6 w-20 shrink-0 rounded-full bg-black"></div>
+              <input name="subtasks" type="hidden" {...register("subtasks")} />
+              <button
+                type="button" // Important: prevent default submit behavior
+                onClick={addSubTasks}
+                className="absolute top-[2.19rem] right-[.19rem] rounded-md bg-indigo-800 px-4 py-1 text-white"
+              >
+                Add
+              </button>
+            </>
+          </InputContainer>
+
+          <div className="m-auto h-fit max-h-24 w-[98%] space-y-1 overflow-y-scroll border-x border-blue-200 pt-1">
+            {subTasks.map((subTask, index) => (
+              <div
+                key={index}
+                className="relative mx-auto flex h-8 w-[97%] items-center justify-between rounded-lg bg-blue-100 px-2 py-1"
+              >
+                <p className="group inline-block w-[100%] truncate">
+                  <span className="inline-block w-full truncate">
+                    {subTask}
+                  </span>
+                </p>
+                <button
+                  onClick={() => deleteTask(index)}
+                  type="button"
+                  className="cursor-pointer px-1"
+                >
+                  <X size={23} color="#3784bf" />
+                </button>
               </div>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-1">
+            <InputContainer label="Tags" className="relative">
+              <>
+                <input
+                  onChange={(e) => filterTags(e)}
+                  value={tag}
+                  name="tags"
+                  id="tags"
+                  autoComplete="off"
+                  type="text"
+                  placeholder="New Task here ..."
+                  className="block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2 py-1.5 text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none"
+                />
+                <input type="hidden" {...register("tags")} />
+
+                {tag && (
+                  <div className="absolute bottom-13 left-0 h-fit w-full rounded-lg bg-white px-1 py-1 shadow-sm shadow-gray-400">
+                    <ul className="max-h-37.5 overflow-y-scroll">
+                      <li
+                        onClick={() => addTags("")}
+                        className="cursor-pointer px-3 py-1 hover:bg-gray-200"
+                      >
+                        {tag}
+                      </li>
+                      {filteredTags.length > 0 &&
+                        filteredTags.map((value, index) => (
+                          <li
+                            onClick={() => addTags(value)}
+                            key={index}
+                            className="cursor-pointer px-3 py-1 hover:bg-gray-200"
+                          >
+                            {value}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                )}
+              </>
+            </InputContainer>
+
+            <div className="scrollbar-custom my-2.5 flex max-w-[53%] gap-1.5 self-end overflow-scroll py-1.5">
+              {tags.map((value, index) => (
+                <Tag
+                  className="flex items-center justify-between"
+                  title={value}
+                  key={`${value}_${index}`}
+                >
+                  <div
+                    onClick={() => deleteTag(index)}
+                    className="ml-1 cursor-pointer"
+                  >
+                    <X size={18} />
+                  </div>
+                </Tag>
+              ))}
             </div>
           </div>
 
-          <div className="w-full space-y-1 py-2">
-            <label className="block text-sm font-semibold text-gray-700">
-              Description
-            </label>
+          <InputContainer full={true} label="Description">
             <textarea
+              {...register("description")}
+              id="description"
               name="description"
               className="block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2 py-1.5 text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none"
-              id="description"
               rows="3"
             ></textarea>
-          </div>
+          </InputContainer>
 
           <div className="flex w-full justify-between space-y-1 pt-7">
-            <button className="h-10 rounded-lg bg-gray-700 px-4 py-1 text-lg text-gray-50">
+            <button className="rounded-full bg-gray-700 px-4 py-1 text-gray-50">
               Cancel
             </button>
-            <button className="h-10 rounded-lg bg-blue-600 px-4 py-1 text-lg text-gray-100">
+            <button
+              type="submit"
+              className="rounded-full bg-blue-600 px-4 py-1 text-gray-100"
+            >
               Create
             </button>
           </div>

@@ -1,5 +1,5 @@
 function NavLink({ children }) {
-  return <a>{children}</a>;
+  return <a className="block cursor-pointer">{children}</a>;
 }
 
 export default NavLink;

@@ -35,8 +35,8 @@ function SideBar() {
           </div>
 
           <div className="mx-auto w-30 space-y-2 px-2 pt-3">
-            <NavLink>Report</NavLink>
-            <NavLink>Tools</NavLink>
+            <div>Report</div>
+            <div>Tools</div>
           </div>
         </div>
       </div>
