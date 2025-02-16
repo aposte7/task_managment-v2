@@ -3,21 +3,22 @@ import DatePicker from "react-datepicker";
 import { Controller } from "react-hook-form";
 import "react-datepicker/dist/react-datepicker.css";
 import "./DateInput.css";
+import Button from "../../../components/Button";
 
 // Define the custom input with forwardRef
 const CustomInput = forwardRef(({ value, onClick }, ref) => (
-  <button
+  <Button
     type="button"
     onClick={(e) => {
       e.preventDefault();
       onClick(e);
     }}
-    className="block w-full appearance-none rounded-lg border border-gray-800 bg-transparent px-3 py-1.5 text-start text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none"
+    className="block w-full appearance-none rounded-lg border border-gray-800 bg-transparent text-start text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none"
     style={{ width: "100%" }}
     ref={ref}
   >
     {value}
-  </button>
+  </Button>
 ));
 CustomInput.displayName = "CustomInput";
 

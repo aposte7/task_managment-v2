@@ -4,6 +4,7 @@ import DateInput from "./components/DateInput";
 import InputContainer from "./components/InputContainer";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import Button from "../../components/Button";
 
 const tempTags = [
   "School",
@@ -19,7 +20,14 @@ function CreateTask({ handleOpen }) {
   const [tag, setTag] = useState("");
   const [filteredTags, setFilteredTags] = useState(tempTags);
 
-  const { register, handleSubmit, watch, control, setValue } = useForm({
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    watch,
+    control,
+    setValue,
+  } = useForm({
     defaultValues: {
       duedate: new Date("2025-04-13"),
       subtasks: [],
@@ -62,7 +70,7 @@ function CreateTask({ handleOpen }) {
 
   const filterTags = (e) => {
     const value = e.target.value.trim();
-    const filteredArray = tempTags.filter((item, index) => {
+    const filteredArray = tempTags.filter((item) => {
       const found = item.toLowerCase().indexOf(value.toLowerCase(), 0);
       if (found != -1) {
         return true;
@@ -98,52 +106,91 @@ function CreateTask({ handleOpen }) {
             </button>
           </div>
 
-          <InputContainer label="Title" full={true}>
-            <input
-              {...register("title")}
-              id="title"
-              name="title"
-              type="text"
-              placeholder="New Task here ..."
-              className="block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2 py-1.5 text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none"
-            />
+          <InputContainer label="Title" full={true} className="relative">
+            <>
+              <input
+                {...register("title", {
+                  required: { value: true, message: "title is required" },
+                  maxLength: { value: 10, message: "maxLength title 10" },
+                })}
+                type="text"
+                placeholder="New Task here ..."
+                className="-gray-300 block w-full appearance-none rounded-lg border bg-transparent px-2 py-1.5 text-sm text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none"
+              />
+              {errors.title && (
+                <p className="absolute -bottom-[0.4rem] left-0 w-full truncate text-sm text-rose-500">
+                  {errors.title.message}
+                </p>
+              )}
+            </>
           </InputContainer>
 
-          <div className="flex w-full items-center justify-between">
-            <InputContainer label="Due Date">
-              <DateInput name="duedate" control={control} />
-            </InputContainer>
+          <div className="relative">
+            <div className="flex w-full items-center justify-between">
+              <InputContainer
+                label="Due Date"
+                lassName="relative"
+                className="relative"
+              >
+                <DateInput name="duedate" control={control} />
+              </InputContainer>
 
-            <InputContainer label="Priority">
-              <input
-                {...register("priority")}
-                name="priority"
-                id="priority"
-                placeholder="high"
-                className="block w-full appearance-none rounded-lg border border-gray-800 bg-transparent px-3 py-1.5 text-start text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none"
-              />
-            </InputContainer>
+              <InputContainer label="Priority" className="relative">
+                <>
+                  <input
+                    {...register("priority", {
+                      maxLength: {
+                        value: 10,
+                        message: "maxLength priority 10",
+                      },
+                    })}
+                    placeholder="high"
+                    className="block w-full appearance-none rounded-lg border border-gray-800 bg-transparent px-3 py-1.5 text-start text-sm text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none"
+                  />
+                </>
+              </InputContainer>
+            </div>
+
+            {(errors.duedate || errors.priority) && (
+              <div className="relative py-1.5">
+                {errors.duedate && (
+                  <p className="absolute -top-[.75rem] left-0 m-0 w-full truncate p-0 text-sm text-rose-500">
+                    {errors.duedate.message}{" "}
+                  </p>
+                )}
+
+                {errors.priority && (
+                  <p className="absolute -bottom-[.8rem] left-0 m-0 w-full truncate p-0 text-sm text-rose-500">
+                    {errors.priority.message}{" "}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
 
           <InputContainer label="Sub-task" full={true} className="relative">
             <>
               <input
                 type="text"
-                id="subtasks"
                 value={task}
                 onChange={(e) => setTask(e.target.value)}
                 autoComplete="off"
                 placeholder="New Task here ..."
-                className="mb-0 block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2 py-1.5 pr-[4.2rem] text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none"
+                className="mb-0 block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2 py-1.5 pr-[4.2rem] text-sm text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none"
               />
               <input name="subtasks" type="hidden" {...register("subtasks")} />
-              <button
-                type="button" // Important: prevent default submit behavior
+              <Button
                 onClick={addSubTasks}
-                className="absolute top-[2.19rem] right-[.19rem] rounded-md bg-indigo-800 px-4 py-1 text-white"
+                variant="small"
+                className="absolute top-[2.55rem] right-[2.5px] bg-blue-500 text-white"
               >
                 Add
-              </button>
+              </Button>
+              {errors.subtasks && (
+                <p className="absolute -bottom-[.5rem] left-0 m-0 w-full truncate p-0 text-sm text-rose-500">
+                  {errors.subtasks.message}{" "}
+                </p>
+              )}
             </>
           </InputContainer>
 
@@ -153,36 +200,41 @@ function CreateTask({ handleOpen }) {
                 key={index}
                 className="relative mx-auto flex h-8 w-[97%] items-center justify-between rounded-lg bg-blue-100 px-2 py-1"
               >
-                <p className="group inline-block w-[100%] truncate">
-                  <span className="inline-block w-full truncate">
-                    {subTask}
-                  </span>
+                <p className="group inline-block h-fit w-[100%] truncate">
+                  {subTask}
                 </p>
-                <button
+                <Button
                   onClick={() => deleteTask(index)}
                   type="button"
-                  className="cursor-pointer px-1"
+                  variant="deleteX"
+                  className="duration-300 hover:bg-blue-300/90"
                 >
-                  <X size={23} color="#3784bf" />
-                </button>
+                  <X size={21} color="#3784bf" />
+                </Button>
               </div>
             ))}
           </div>
 
-          <div className="flex items-center gap-1">
-            <InputContainer label="Tags" className="relative">
+          <div className="relative flex items-center gap-1">
+            <InputContainer label="Tags">
               <>
                 <input
                   onChange={(e) => filterTags(e)}
                   value={tag}
-                  name="tags"
-                  id="tags"
                   autoComplete="off"
                   type="text"
                   placeholder="New Task here ..."
-                  className="block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2 py-1.5 text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none"
+                  className="block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2 py-1.5 text-sm text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none"
                 />
-                <input type="hidden" {...register("tags")} />
+                <input
+                  type="hidden"
+                  {...register("tags", {
+                    required: {
+                      value: true,
+                      message: "atleast one tag is required",
+                    },
+                  })}
+                />
 
                 {tag && (
                   <div className="absolute bottom-13 left-0 h-fit w-full rounded-lg bg-white px-1 py-1 shadow-sm shadow-gray-400">
@@ -206,6 +258,12 @@ function CreateTask({ handleOpen }) {
                     </ul>
                   </div>
                 )}
+
+                {errors.tags && (
+                  <p className="absolute -bottom-[.4rem] left-0 m-0 w-full truncate p-0 text-sm text-rose-500">
+                    {errors.tags.message}
+                  </p>
+                )}
               </>
             </InputContainer>
 
@@ -227,26 +285,30 @@ function CreateTask({ handleOpen }) {
             </div>
           </div>
 
-          <InputContainer full={true} label="Description">
-            <textarea
-              {...register("description")}
-              id="description"
-              name="description"
-              className="block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2 py-1.5 text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none"
-              rows="3"
-            ></textarea>
+          <InputContainer full={true} label="Description" className="relative">
+            <>
+              <textarea
+                {...register("description")}
+                id="description"
+                name="description"
+                className="block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2 py-1.5 text-sm text-gray-700 focus:border focus:border-blue-500 focus:shadow-sm focus:outline-none"
+                rows="3"
+              ></textarea>
+              {errors.description && (
+                <p className="absolute -bottom-[.4rem] left-0 m-0 w-full truncate p-0 text-sm text-rose-500">
+                  {errors.description.message}{" "}
+                </p>
+              )}
+            </>
           </InputContainer>
 
-          <div className="flex w-full justify-between space-y-1 pt-7">
-            <button className="rounded-full bg-gray-700 px-4 py-1 text-gray-50">
+          <div className="flex w-full justify-between pt-7">
+            <Button type="button" className="bg-rose-500 text-white">
               Cancel
-            </button>
-            <button
-              type="submit"
-              className="rounded-full bg-blue-600 px-4 py-1 text-gray-100"
-            >
+            </Button>
+            <Button type="submit" className="bg-blue-600 text-white">
               Create
-            </button>
+            </Button>
           </div>
         </form>
       </div>

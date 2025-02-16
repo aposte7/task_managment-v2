@@ -1,4 +1,4 @@
-function Tag({ children, title = "", className }) {
+function Tag({ children, title = "", className = "" }) {
   const label = title.length > 7 ? `${title.slice(0, 7)}...` : title;
   return (
     <div
